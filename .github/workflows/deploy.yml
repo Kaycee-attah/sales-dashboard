@@ -33,24 +33,13 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production --base-href ./
       
-    - name: Debug - Show build output
-      run: |
-        echo "=== Checking build output ==="
-        find . -name "index.html" -type f
-        echo "=== dist folder contents ==="
-        ls -la dist/
-        echo "=== sales-dashboard folder contents ==="
-        ls -la dist/sales-dashboard/ || echo "No sales-dashboard folder"
-        echo "=== All files in dist ==="
-        find dist/ -type f
-      
     - name: Setup Pages
       uses: actions/configure-pages@v4
       
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ./dist/sales-dashboard
+        path: ./dist/sales-dashboard/browser  # ← CHANGED THIS LINE
         
     - name: Deploy to GitHub Pages
       id: deployment
