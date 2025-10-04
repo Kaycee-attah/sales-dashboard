@@ -33,9 +33,6 @@ jobs:
     - name: Build Angular app
       run: npm run build -- --configuration production --base-href ./
       
-    - name: Create 404.html for SPA routing
-      run: cp ./dist/sales-dashboard/index.html ./dist/sales-dashboard/404.html
-      
     - name: Setup Pages
       uses: actions/configure-pages@v4
       
