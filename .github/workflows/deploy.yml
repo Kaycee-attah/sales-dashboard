@@ -1,11 +1,20 @@
-name: Debug Angular Build
+name: Deploy Angular App to GitHub Pages
 
 on:
   push:
     branches: [ master ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  debug-build:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -22,15 +31,19 @@ jobs:
       run: npm install
       
     - name: Build Angular app
-      run: |
-        echo "=== Starting Angular Build ==="
-        npm run build -- --configuration production --base-href ./
-        echo "=== Build Successful ==="
+      run: npm run build -- --configuration production --base-href ./
       
-    - name: Show build output
-      run: |
-        echo "=== Build Output Structure ==="
-        find . -name "index.html" -type f
-        echo "=== dist folder contents ==="
-        ls -la dist/ || echo "No dist folder"
-        ls -la dist/sales-dashboard/ || echo "No sales-dashboard folder"
+    - name: Create 404.html for SPA routing
+      run: cp ./dist/sales-dashboard/index.html ./dist/sales-dashboard/404.html
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./dist/sales-dashboard
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
