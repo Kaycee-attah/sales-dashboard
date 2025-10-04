@@ -27,7 +27,7 @@ A dynamic and interactive Sales Analytics Dashboard built with modern Angular. I
 
 ## 🌐 Live Demo
 
-Check out the live application: [Demo Link](https://your-demo-link.netlify.app)
+Check out the live application: [Demo Link](https://kaycee-attah.github.io/sales-dashboard/)
 
 ## 💻 Local Development
 
