@@ -1,20 +1,11 @@
-name: Deploy Angular App to GitHub Pages
+name: Debug Angular Build
 
 on:
   push:
     branches: [ master ]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
+  debug-build:
     runs-on: ubuntu-latest
     
     steps:
@@ -30,39 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Build Angular app with verbose output
+    - name: Build Angular app
       run: |
         echo "=== Starting Angular Build ==="
-        npm run build -- --configuration production --base-href ./ --verbose
-        echo "=== Build Complete ==="
-        
-    - name: Check if dist folder exists
+        npm run build -- --configuration production --base-href ./
+        echo "=== Build Successful ==="
+      
+    - name: Show build output
       run: |
-        echo "=== Checking Build Output ==="
-        ls -la
-        echo "--- Checking dist folder ---"
-        ls -la dist/ || echo "No dist folder found"
-        echo "--- Checking for sales-dashboard ---"
-        ls -la dist/sales-dashboard/ || echo "No sales-dashboard folder found"
-      
-    - name: Create 404.html for SPA routing
-      run: |
-        if [ -f "./dist/sales-dashboard/index.html" ]; then
-          cp ./dist/sales-dashboard/index.html ./dist/sales-dashboard/404.html
-          echo "404.html created successfully"
-        else
-          echo "ERROR: index.html not found - build may have failed"
-          exit 1
-        fi
-      
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist/sales-dashboard
-        
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+        echo "=== Build Output Structure ==="
+        find . -name "index.html" -type f
+        echo "=== dist folder contents ==="
+        ls -la dist/ || echo "No dist folder"
+        ls -la dist/sales-dashboard/ || echo "No sales-dashboard folder"
