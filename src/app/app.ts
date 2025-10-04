@@ -1,6 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ThemeService } from './theme.service'
 
@@ -26,7 +25,6 @@ import { BaseChartDirective } from 'ng2-charts';
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
     // Angular Material
     MatFormFieldModule,
     MatInputModule, 
