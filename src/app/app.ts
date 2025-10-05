@@ -46,6 +46,25 @@ export class App {
   private dataService = inject(DataService);
   private themeService = inject(ThemeService);
 
+  ngOnInit() {
+    this.checkServiceWorker();
+  }
+
+  private async checkServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          console.log('Service Worker registered successfully');
+        } else {
+          console.log('No Service Worker registered');
+        }
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
+    }
+  }
+
   // Expose theme signal to template
   currentTheme = this.themeService.currentTheme;
 
@@ -164,19 +183,4 @@ export class App {
   };
 
   displayedColumns: string[] = ['id', 'customer', 'amount', 'status', 'date'];
-
-  ngOnInit() {
-    // Data loads automatically via toSignal!
-  }
-
-  
-//   recentTransactions = [
-//     { id: 'ORD-001', customer: 'John Smith', amount: 245, status: 'completed', date: '2024-01-15' },
-//     { id: 'ORD-002', customer: 'Sarah Johnson', amount: 189, status: 'pending', date: '2024-01-15' },
-//     { id: 'ORD-003', customer: 'Mike Davis', amount: 324, status: 'completed', date: '2024-01-14' },
-//     { id: 'ORD-004', customer: 'Emily Wilson', amount: 156, status: 'failed', date: '2024-01-14' },
-//     { id: 'ORD-005', customer: 'Chris Brown', amount: 278, status: 'completed', date: '2024-01-13' }
-//   ];
-// 
-
 }
